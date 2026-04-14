@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { 
   Cpu, Book, Clock, Activity, Settings, CheckCircle2, 
   Play, Pause, Trash2, Edit3, ExternalLink, Shield, 
-  Terminal as TerminalIcon
+  Terminal as TerminalIcon, Box, Globe, Zap, Layers
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -12,7 +12,7 @@ function cn(...inputs) { return twMerge(clsx(inputs)); }
 
 const MOCK_DATA = {
   skills: [
-    { id: 'tiktok-analyst', name: 'tiktok-analyst', cat: 'social-media', status: 'active', desc: ' la analyzes trends' },
+    { id: 'tiktok-analyst', name: 'tiktok-analyst', cat: 'social-media', status: 'active', desc: 'Analyzes viral TikTok trends' },
     { id: 'github-pr-workflow', name: 'github-pr-workflow', cat: 'github', status: 'active', desc: 'PR lifecycle management' },
     { id: 'gamefication_video', name: 'gamefication_video', cat: 'creative', status: 'patching', desc: 'Viral explainers' },
   ],
@@ -30,7 +30,20 @@ const MOCK_DATA = {
     { id: 't2', content: 'Build Command Center UI', status: 'in_progress' },
     { id: 't3', content: 'Integrate API Bridge', status: 'pending' },
     { id: 't4', content: 'Deploy to Vercel', status: 'pending' },
-  ]
+  ],
+  openclaw: {
+    tools: [
+      { id: 'chrome-relay', name: 'Chrome Relay', status: 'online', desc: 'Remote browser control & automation' },
+      { id: 'kie-image', name: 'Kie Image Gen', status: 'online', desc: 'AI Visual content generation' },
+      { id: 'n8n-workflow', name: 'n8n Engine', status: 'online', desc: 'Logic & automation orchestration' },
+      { id: 'webhook-manager', name: 'Webhook Bridge', status: 'online', desc: 'External event delivery system' },
+    ],
+    n8n_workflows: [
+      { id: 'wf_1', name: 'TikTok Viral Pipeline', status: 'active', last_execution: '10m ago', result: 'Success' },
+      { id: 'wf_2', name: 'Daily News Aggregator', status: 'active', last_execution: '4h ago', result: 'Success' },
+      { id: 'wf_3', name: 'User Memory Sync', status: 'idle', last_execution: '2d ago', result: 'Warning' },
+    ]
+  }
 };
 
 export default function App() {
@@ -48,6 +61,9 @@ export default function App() {
           <NavItem active={activeTab==='memory'} onClick={() => setActiveTab('memory')} icon={<Shield size={18}/>} label="Memory Vault" />
           <NavItem active={activeTab==='cron'} onClick={() => setActiveTab('cron')} icon={<Clock size={18}/>} label="Cron Monitor" />
           <NavItem active={activeTab==='tasks'} onClick={() => setActiveTab('tasks')} icon={<TerminalIcon size={18}/>} label="Task Tracker" />
+          <div className="pt-4 pb-2 px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Ecosystem</div>
+          <NavItem active={activeTab==='openclaw'} onClick={() => setActiveTab('openclaw')} icon={<Box size={18}/>} label="OpenClaw Tools" />
+          <NavItem active={activeTab==='n8n'} onClick={() => setActiveTab('n8n')} icon={<Zap size={18}/>} label="n8n Automations" />
         </nav>
         <div className="p-4 border-t border-slate-800 bg-[#020617]">
           <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-800 cursor-pointer text-slate-400 transition-colors">
@@ -75,6 +91,8 @@ export default function App() {
             {activeTab === 'memory' && <Memory />}
             {activeTab === 'cron' && <Cron />}
             {activeTab === 'tasks' && <Tasks />}
+            {activeTab === 'openclaw' && <OpenClaw />}
+            {activeTab === 'n8n' && <N8nView />}
           </div>
         </div>
       </main>
@@ -250,6 +268,83 @@ function Tasks() {
             </div>
           </div>
         ))}
+      </div>
+    </div>
+  );
+}
+
+function OpenClaw() {
+  return (
+    <div className="space-y-6">
+       <div className="flex justify-between items-center">
+        <p className="text-sm text-slate-400">Integrated tool ecosystem and remote agents.</p>
+        <div className="flex gap-2">
+            <button className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-xs font-medium transition-colors flex items-center gap-2">
+                <Globe size={14} /> Remote Session
+            </button>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {MOCK_DATA.openclaw.tools.map(t => (
+          <div key={t.id} className="p-4 bg-slate-800/50 rounded-xl border border-slate-700 hover:border-indigo-500 transition-all group">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-indigo-500/10 text-indigo-400 rounded-lg"><Layers size={18} /></div>
+                <span className="font-semibold text-sm">{t.name}</span>
+              </div>
+              <span className={cn("px-2 py-0.5 rounded-full text-[10px] font-bold", t.status === 'online' ? "bg-emerald-500/10 text-emerald-500" : "bg-slate-500/10 text-slate-500")}>{t.status}</span>
+            </div>
+            <p className="text-xs text-slate-400 mb-4">{t.desc}</p>
+            <div className="flex justify-end gap-2">
+                <button className="p-2 hover:bg-slate-700 rounded-lg text-slate-400 hover:text-white transition-colors"><ExternalLink size={14}/></button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function N8nView() {
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <p className="text-sm text-slate-400">Agentic automation orchestration via n8n.</p>
+        <button className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-medium transition-colors">+ Create Workflow</button>
+      </div>
+      <div className="overflow-x-auto">
+        <table className="w-full text-left border-collapse">
+          <thead>
+            <tr className="text-xs text-slate-500 uppercase tracking-wider border-b border-slate-700">
+              <th className="pb-3 font-medium">Workflow Name</th>
+              <th className="pb-3 font-medium">Status</th>
+              <th className="pb-3 font-medium">Last Run</th>
+              <th className="pb-3 font-medium">Result</th>
+              <th className="pb-3 font-medium text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-800">
+            {MOCK_DATA.openclaw.n8n_workflows.map(w => (
+              <tr key={w.id} className="group hover:bg-slate-800/30 transition-colors">
+                <td className="py-4 text-sm font-medium">{w.name}</td>
+                <td className="py-4">
+                  <span className={cn("px-2 py-0.5 rounded-full text-[10px] font-bold", w.status === 'active' ? "bg-emerald-500/10 text-emerald-500" : "bg-slate-500/10 text-slate-500")}>{w.status}</span>
+                </td>
+                <td className="py-4 text-sm text-slate-400">{w.last_execution}</td>
+                <td className="py-4">
+                   <span className={cn("text-xs", w.result === 'Success' ? "text-emerald-400" : "text-amber-400")}>{w.result}</span>
+                </td>
+                <td className="py-4 text-right">
+                   <div className="flex justify-end gap-2">
+                      <button className="p-2 hover:bg-slate-700 rounded-lg text-slate-400 hover:text-white"><Play size={14}/></button>
+                      <button className="p-2 hover:bg-slate-700 rounded-lg text-slate-400 hover:text-white"><Pause size={14}/></button>
+                      <button className="p-2 hover:bg-slate-700 rounded-lg text-slate-400 hover:text-red-400"><Trash2 size={14}/></button>
+                   </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
