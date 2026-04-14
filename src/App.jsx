@@ -141,7 +141,7 @@ function Overview() {
           <h3 className="text-sm font-medium text-slate-400 flex items-center gap-2"><Activity size={16} /> Real-time Stream</h3>
           <div className="bg-black/60 p-4 rounded-2xl border border-slate-700 font-mono text-[11px] text-emerald-400 space-y-2 h-48 overflow-hidden relative">
             {logs.map((log, i) => (
-              <motion.p initial={{ opacity:0, x:-10 }} animate={{ opacity:1, x:0 }} key={i}>{log}</p>
+              <motion.p initial={{ opacity:0, x:-10 }} animate={{ opacity:1, x:0 }} key={i}>{log}</motion.p>
             ))}
             <div className="absolute bottom-0 left-0 w-full h-10 bg-gradient-to-t from-black/60 to-transparent" />
           </div>
